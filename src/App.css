@@ -1,0 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  margin: 0;
+  background-color: #121212;
+  font-family: 'Roboto', sans-serif;
+}
+
+h1 {
+  font-size: 48px;
+  color: #fff;
+}
+
+.tag-container {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  max-width: 600px;
+  margin-bottom: 20px;
+}
+
+.tag {
+  background-color: #3490dc;
+  color: #ffffff;
+  border-radius: 6px;
+  align-items: center;
+  padding: 5px 10px;
+  text-transform: uppercase;
+}
+
+.tag span {
+  margin-right: 0.5em;
+}
+
+.tag button {
+  background: none;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 0.8em;
+}
+
+input {
+  height: 40px;
+  border-radius: 5px;
+  font-size: 18px;
+  color: #666;
+  padding-left: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  width: 600px;
+}
+
+input:focus {
+  outline: none;
+}
+
+.suggestions {
+  list-style-type: none;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+.suggestions li {
+  cursor: pointer;
+  padding: 0.5em;
+  border-radius: 4px;
+  margin-top: 0.5em;
+  background-color: #333;
+  color: #fff;
+  text-transform: capitalize;
+}
+
+.suggestions li:hover {
+  background-color: #444;
+}
+
+@media only screen and (max-width: 600px) {
+  #root {
+    padding: 20px;
+  }
+  .tag-container,
+  .suggestions,
+  input {
+    width: 100%;
+  }
+}
