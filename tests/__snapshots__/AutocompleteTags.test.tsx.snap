@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AutocompleteTags renders AutocompleteTags component 1`] = `
+<DocumentFragment>
+  <div>
+    <div
+      class="tag-container"
+    />
+    <input
+      data-testid="tag-input"
+      placeholder="Add tags or search..."
+      type="text"
+      value=""
+    />
+    <ul
+      class="suggestions"
+    />
+  </div>
+</DocumentFragment>
+`;
