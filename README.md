@@ -1,30 +1,28 @@
-# React + TypeScript + Vite
+# Autocomplete Project
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project is a simple autocomplete component built with React, TypeScript, and Jest for testing.
 
-Currently, two official plugins are available:
+https://github.com/Aladinbensassi/Auto-complete/assets/14036311/8a46588b-2698-4bed-965c-bfe571284029
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## Expanding the ESLint configuration
+## Getting Started
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+These instructions will guide you on how to set up and run the project on your local machine.
 
-- Configure the top-level `parserOptions` property like this:
+### Prerequisites
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+Ensure you have the following software installed on your machine:
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+- [Node.js](https://nodejs.org/) - version 14 or later
+- [Yarn](https://yarnpkg.com/) - version 1.22 or later
+
+### Installation
+
+1. Clone the repository:
+2. Navigate to the project directory
+3. Install dependencies with ```yarn install```
+4. Run the application with ```yarn dev```
+
+### Testing
+  1. You can run tests using ```yarn test```
+     
