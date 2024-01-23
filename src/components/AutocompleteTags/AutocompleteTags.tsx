@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import Tag from '../Tag/Tags';
+import useLocalStorage from '../../hooks/useLocalStorage';
 
 // Define a type for the tags stored in localStorage
 type StoredTags = string[];
@@ -7,15 +8,10 @@ type StoredTags = string[];
 // AutocompleteTags Component
 const AutocompleteTags: React.FC = () => {
     // Load tags from localStorage on initial render
-    const storedTags = JSON.parse(localStorage.getItem('tags') || '[]') as StoredTags;
-    const [tags, setTags] = useState<StoredTags>(storedTags);
+    const [tags, setTags] = useLocalStorage<StoredTags>("tags", []);
     const [inputValue, setInputValue] = useState<string>('');
     const [suggestions, setSuggestions] = useState<string[]>([]);
 
-    // Effect to save tags to localStorage whenever tags change
-    useEffect(() => {
-        localStorage.setItem('tags', JSON.stringify(tags));
-    }, [tags]);
 
     // Callback to handle input change
     const handleInputChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,7 +21,7 @@ const AutocompleteTags: React.FC = () => {
         // Filter suggestions based on the input value
         if (newInputValue.trim() !== '') {
             const filteredSuggestions = tags.filter((tag) =>
-                tag.toLowerCase().includes(newInputValue.toLowerCase())
+                tag.includes(newInputValue.toLowerCase())
             );
             setSuggestions(filteredSuggestions);
         } else {
@@ -36,11 +32,10 @@ const AutocompleteTags: React.FC = () => {
     // Callback to handle key down event on the input
     const handleInputKeyDown = useCallback((event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter' && inputValue.trim() !== '') {
-            const lowercaseTags = tags.map(tag => tag.toLowerCase());
             const trimmedInputValue = inputValue.trim().toLowerCase();
 
             // Check if the tag already exists before adding
-            if (!lowercaseTags.includes(trimmedInputValue)) {
+            if (!tags.includes(trimmedInputValue)) {
                 setTags([...tags, trimmedInputValue]);
             }
             setInputValue('');
@@ -50,11 +45,9 @@ const AutocompleteTags: React.FC = () => {
     }, [tags, inputValue]);
 
     // Callback to handle tag deletion
-    const handleTagDelete = useCallback((index: number) => {
+    const handleTagDelete = useCallback((value: string) => {
         // Remove the selected tag
-        const newTags = [...tags];
-        newTags.splice(index, 1);
-        setTags(newTags);
+        setTags(tags.filter((tag) => tag !== value));
     }, [tags]);
 
     // Callback to handle suggestion selection
@@ -77,13 +70,14 @@ const AutocompleteTags: React.FC = () => {
     return (
         <div>
             <div className='tag-container'>
-                {tags.map((tag, index) => (
+                {tags.map((tag) => (
                     // Render individual tags with delete functionality
-                    <Tag key={index} label={tag} onDelete={() => handleTagDelete(index)} />
+                    <Tag key={tag} label={tag} onDelete={() => handleTagDelete(tag)} />
                 ))}
             </div>
             {/* Input for adding tags or searching */}
             <input
+                data-testid="tag-input"
                 type="text"
                 value={inputValue}
                 onChange={handleInputChange}
@@ -94,7 +88,7 @@ const AutocompleteTags: React.FC = () => {
             <ul className='suggestions'>
                 {suggestions.map((suggestion, index) => (
                     // Render suggestions with click event to select
-                    <li key={index} onClick={() => handleSuggestionSelect(suggestion)}>
+                    <li key={index} onClick={() => handleSuggestionSelect(suggestion)} data-testid="suggestion">
                         {suggestion}
                     </li>
                 ))}

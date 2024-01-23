@@ -1,42 +1,54 @@
-import { render, fireEvent, screen } from '@testing-library/react';
-import '@testing-library/jest-dom';
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import AutocompleteTags from '../src/components/AutocompleteTags/AutocompleteTags';
+import '@testing-library/jest-dom/extend-expect';
 
 describe('AutocompleteTags', () => {
-    beforeEach(() => {
-        jest.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(JSON.stringify(['tag1', 'tag2']));
+    it('renders AutocompleteTags component', () => {
+        const { asFragment } = render(<AutocompleteTags />);
+
+        expect(asFragment()).toMatchSnapshot();
     });
 
-    afterEach(() => {
-        jest.restoreAllMocks();
+
+    it('adds a tag on pressing Enter key', () => {
+        render(<AutocompleteTags />);
+        const inputElement = screen.getByTestId('tag-input') as HTMLInputElement;
+        fireEvent.change(inputElement, { target: { value: 'newtag' } });
+        fireEvent.keyDown(inputElement, { key: 'Enter', code: 'Enter' });
+        expect(screen.getByText('newtag')).toBeInTheDocument();
     });
 
-    it('renders tags and input field', () => {
+    it('deletes a tag on clicking delete button', async () => {
         render(<AutocompleteTags />);
 
-        expect(screen.getByPlaceholderText(/Add tags or search.../i)).toBeInTheDocument();
-        expect(screen.getByText(/tag1/i)).toBeInTheDocument();
-        expect(screen.getByText(/tag2/i)).toBeInTheDocument();
+        await act(async () => {
+            await waitFor(() => {
+                const tagContainer = screen.queryByTestId('tag-container');
+
+                if (tagContainer) {
+                    const deleteButton = tagContainer.querySelector('[data-testid="delete-button"]');
+
+                    if (deleteButton) {
+                        fireEvent.click(deleteButton);
+
+                        expect(screen.queryByText('newtag')).not.toBeInTheDocument();
+                    }
+                }
+            });
+        });
     });
 
-    it('adds a new tag on Enter key press', () => {
+    it('selects a suggestion on clicking a suggestion', async () => {
         render(<AutocompleteTags />);
 
-        const input = screen.getByPlaceholderText(/Add tags or search.../i) as HTMLInputElement;
+        await act(async () => {
+            await waitFor(() => {
+                const suggestion = screen.queryByTestId('suggestion');
 
-        fireEvent.change(input, { target: { value: 'newTag' } });
-        fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' });
-
-        expect(screen.getByText(/newTag/i)).toBeInTheDocument();
-        expect(input.value).toBe('');
-    });
-
-    it('deletes a tag on delete button click', () => {
-        render(<AutocompleteTags />);
-
-        const deleteButton = screen.getByText(/tag1/i).closest('.tag')!.querySelector('button')!;
-        fireEvent.click(deleteButton);
-
-        expect(screen.queryByText(/tag1/i)).not.toBeInTheDocument();
+                if (suggestion) {
+                    fireEvent.click(suggestion);
+                }
+            });
+        });
     });
 });

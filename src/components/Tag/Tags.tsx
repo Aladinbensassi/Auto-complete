@@ -9,7 +9,9 @@ const Tag: React.FC<TagProps> = ({ label, onDelete }) => {
     return (
         <div className="tag">
             <span>{label}</span>
-            <button onClick={onDelete}>&times;</button>
+            <button data-testid="delete-button" onClick={onDelete}>
+                &times;
+            </button>
         </div>
     );
 };
